@@ -41,6 +41,7 @@ router.use(function (req, res, next) {
     } else {
       req.firebaseIsAdmin = false;
     }
+
     next();
   });
 });
@@ -115,8 +116,7 @@ router.delete("/api/message/delete", (req, res, next) => {
           }
         });
       } else {
-        next(createError(403, "Access Forbidden - Admin Only"));
-        return;
+        return next(createError(403, "Access Forbidden - Admin Only"));
       }
     } else if (messageid) {
       Message.deleteOne({ _id: messageid }).exec(function (err, result) {
