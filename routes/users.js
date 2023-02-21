@@ -115,7 +115,8 @@ router.delete("/api/message/delete", (req, res, next) => {
           }
         });
       } else {
-        return next(createError(403, "Access Forbidden - Admin Only"));
+        next(createError(403, "Access Forbidden - Admin Only"));
+        return;
       }
     } else if (messageid) {
       Message.deleteOne({ _id: messageid }).exec(function (err, result) {
