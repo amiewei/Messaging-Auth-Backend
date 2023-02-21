@@ -22,7 +22,6 @@ router.use(function (req, res, next) {
         next();
       });
   } catch (error) {
-    console.log("Error validating token:", error);
     next(createError(403, error));
   }
 });
@@ -32,20 +31,12 @@ router.use(function (req, res, next) {
   const uid = req.firebaseuid;
   const isAdmin = req.firebaseIsAdmin;
 
-  console.log(uid, isAdmin);
   User.findOne({ uid }).exec(function (err, result) {
     if (err) {
-      console.log("error found");
       return next(err);
-    }
-    console.log(result);
-    if (result) {
-      console.log("mongo isAdmin value:");
-      console.log(result.isAdmin);
     }
     //check if isAdmin is passed through client or user is already admin in db then attach admin value to request
     if ((result && result.isAdmin) || isAdmin) {
-      console.log("req.firebaseIsAdmin to set to true");
       req.firebaseIsAdmin = true;
     } else {
       req.firebaseIsAdmin = false;
@@ -56,7 +47,6 @@ router.use(function (req, res, next) {
 
 // Update user's display name or create an entry for the user if not in db
 router.patch("/:uid", async (req, res, next) => {
-  console.log("router patch - update user");
   const uid = req.firebaseuid;
   const { displayName, email } = req.body;
   const isAdmin = req.firebaseIsAdmin;
@@ -75,7 +65,6 @@ router.patch("/:uid", async (req, res, next) => {
       { displayName, email, isAdmin },
       { new: true, upsert: true }
     );
-    console.log(updatedUser);
 
     res.status(201).send(); //this just sends status code of 201 to acknowledge success but no data
   } catch (error) {
@@ -122,7 +111,6 @@ router.delete("/api/message/delete", (req, res, next) => {
       if (req.firebaseIsAdmin) {
         Message.deleteMany({ uid }).exec(function (err, result) {
           if (err) {
-            console.log("error found");
             return next(err);
           }
         });
