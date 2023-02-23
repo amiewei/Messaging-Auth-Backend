@@ -61,9 +61,9 @@ admin.initializeApp({
 });
 
 mongoose.set("strictQuery", false);
-// const dev_db_url = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.jnybsd5.mongodb.net/firebase-auth?retryWrites=true&w=majority`;
-// const mongoDB = process.env.MONGODB_URI || dev_db_url;
-const mongoDB = process.env.MONGODB_URI;
+const dev_db_url = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.jnybsd5.mongodb.net/firebase-auth?retryWrites=true&w=majority`;
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
+// const mongoDB = process.env.MONGODB_URI;
 
 // console.log(process.env.MONGO_PASSWORD);
 console.log(mongoDB);
@@ -74,6 +74,7 @@ mongoose
     console.log("mongodb connected");
   })
   .catch((error) => {
+    console.log("mongodb error");
     console.log(error);
   });
 
