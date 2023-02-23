@@ -64,7 +64,7 @@ mongoose.set("strictQuery", false);
 const dev_db_url = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.jnybsd5.mongodb.net/firebase-auth?retryWrites=true&w=majority`;
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
-console.log(MONGO_PASSWORD);
+console.log(process.env.MONGO_PASSWORD);
 console.log(mongoDB);
 
 mongoose.connect(mongoDB, {
