@@ -74,7 +74,7 @@ mongoose
     console.log("mongodb connected");
   })
   .catch((error) => {
-    next(error);
+    console.log(error);
   });
 
 // Error handling should come last. Here catch 404 and forward to error handler
