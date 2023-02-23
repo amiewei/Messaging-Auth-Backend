@@ -68,10 +68,14 @@ const mongoDB = process.env.MONGODB_URI;
 // console.log(process.env.MONGO_PASSWORD);
 console.log(mongoDB);
 
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose
+  .connect(mongoDB)
+  .then(() => {
+    console.log("mongodb connected");
+  })
+  .catch((error) => {
+    next(error);
+  });
 
 // Error handling should come last. Here catch 404 and forward to error handler
 app.use(function (req, res, next) {
