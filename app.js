@@ -43,6 +43,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
+console.log(process.env.FIREBASE_PRIVATE_KEY);
 // Fetch the service account key JSON file contents
 // const serviceAccount = require("./express-mdn-firebase-adminsdk-key.json");
 
