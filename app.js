@@ -16,7 +16,6 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-console.log(process.env.NODE_ENV);
 const app = express();
 
 app.use(cors());
@@ -43,10 +42,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
-console.log(process.env.FIREBASE_PRIVATE_KEY);
-console.log(process.env.FIREBASE_PROJECT_ID);
-console.log(process.env.FIREBASE_CLIENT_EMAIL);
-
 // Fetch the service account key JSON file contents
 // const serviceAccount = require("./express-mdn-firebase-adminsdk-key.json");
 
@@ -63,10 +58,6 @@ admin.initializeApp({
 mongoose.set("strictQuery", false);
 const dev_db_url = `mongodb+srv://admin:${process.env.MONGO_PASSWORD}@cluster0.jnybsd5.mongodb.net/firebase-auth?retryWrites=true&w=majority`;
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
-// const mongoDB = process.env.MONGODB_URI;
-
-console.log(process.env.MONGO_PASSWORD);
-console.log(mongoDB);
 
 mongoose
   .connect(mongoDB)
