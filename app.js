@@ -12,8 +12,10 @@ const cors = require("cors");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
+let firebasePrivateKey;
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
+  firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n");
 }
 
 const app = express();
@@ -51,7 +53,8 @@ admin.initializeApp({
     projectId: process.env.FIREBASE_PROJECT_ID,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
     // privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-    privateKey: JSON.parse(process.env.FIREBASE_PRIVATE_KEY),
+    privateKey:
+      firebasePrivateKey || JSON.parse(process.env.FIREBASE_PRIVATE_KEY),
   }),
 });
 
