@@ -7,10 +7,8 @@ const { getAuth } = require("firebase-admin/auth");
 
 //using firebase admin sdk to validate user token
 router.use(function (req, res, next) {
-  console.log("user - 1st middleware");
   const userIdToken = req.headers.useridtoken || req.body.useridtoken;
   const isAdmin = req.headers.isAdmin || req.body.isAdmin;
-  console.log(userIdToken, isAdmin);
 
   try {
     getAuth()
@@ -50,7 +48,6 @@ router.use(function (req, res, next) {
 
 // Update user's display name or create an entry for the user if not in db
 router.patch("/:uid", async (req, res, next) => {
-  console.log("updating user");
   const uid = req.firebaseuid;
   const { displayName, email } = req.body;
   const isAdmin = req.firebaseIsAdmin;
@@ -76,7 +73,7 @@ router.patch("/:uid", async (req, res, next) => {
   }
 });
 
-router.post("/api/message/add", (req, res, next) => {
+router.post("/message/add", (req, res, next) => {
   const { uid, _id, message, image } = req.body;
   const timestamp = new Date();
   console.log("api/essage/add");
@@ -109,7 +106,7 @@ router.post("/api/message/add", (req, res, next) => {
   }
 });
 
-router.delete("/api/message/delete", (req, res, next) => {
+router.delete("/message/delete", (req, res, next) => {
   const { messageid, uid, method } = req.headers || {};
 
   if (req.firebaseuid === uid) {
