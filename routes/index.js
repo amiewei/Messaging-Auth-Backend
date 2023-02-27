@@ -8,9 +8,11 @@ router.get("/", async (req, res, next) => {
 
 /* Get all messages. */
 router.get("/messages", async (req, res, next) => {
+  //excluding email and id from results
   Message.find()
-    .populate("user")
+    .populate("user", "-email -_id")
     .exec(function (err, results) {
+      console.log(results);
       if (err) {
         return next(err);
       }

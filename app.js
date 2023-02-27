@@ -11,17 +11,16 @@ const cors = require("cors");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+const app = express();
 
 let firebasePrivateKey;
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
   firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n");
+  app.use(cors());
+} else {
+  app.use(cors({ origin: "https://chirp.ddns.net" }));
 }
-
-const app = express();
-
-app.use(cors({ origin: "https://chirp.ddns.net" }));
-// app.use(cors());
 
 // view engine setup
 app.engine(

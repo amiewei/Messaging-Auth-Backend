@@ -4,48 +4,10 @@ const User = require("../models/user");
 const Message = require("../models/message");
 const createError = require("http-errors");
 const { getAuth } = require("firebase-admin/auth");
+const { verifyUserIdToken, verifyIsAdmin } = require("../middleware/auth");
 
-//using firebase admin sdk to validate user token
-router.use(function (req, res, next) {
-  console.log("verify user id token");
-  const userIdToken = req.headers.authorization;
-  const isAdmin = req.body.isAdmin;
-
-  try {
-    getAuth()
-      .verifyIdToken(userIdToken)
-      .then((decodedToken) => {
-        const uid = decodedToken.uid;
-
-        //attach the uid from firebase admin sdk to the req
-        req.firebaseuid = uid;
-        req.firebaseIsAdmin = isAdmin;
-        next();
-      });
-  } catch (error) {
-    next(createError(403, error));
-  }
-});
-
-//middleware to check if user is admin
-router.use(function (req, res, next) {
-  const uid = req.firebaseuid;
-  const isAdmin = req.firebaseIsAdmin;
-
-  User.findOne({ uid }).exec(function (err, result) {
-    if (err) {
-      return next(err);
-    }
-    //check if isAdmin is passed through client or user is already admin in db then attach admin value to request
-    if ((result && result.isAdmin) || isAdmin) {
-      req.firebaseIsAdmin = true;
-    } else {
-      req.firebaseIsAdmin = false;
-    }
-
-    next();
-  });
-});
+//middleware to verify user idtoken and check if isAdmin is passed
+router.use(verifyUserIdToken, verifyIsAdmin);
 
 // Update user's display name or create an entry for the user if not in db
 router.patch("/:uid", async (req, res, next) => {
