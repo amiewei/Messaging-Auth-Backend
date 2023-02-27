@@ -19,11 +19,4 @@ router.get("/messages", async (req, res, next) => {
     });
 });
 
-// router.get("/*", function (req, res) {
-//   console.log("catch all");
-
-//   // const __dirname = "/Users/swei1/VscodeProj/vite-react-tailwind-v3-auth";
-//   res.status(406).send();
-// });
-
 module.exports = router;

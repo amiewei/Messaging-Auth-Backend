@@ -7,8 +7,9 @@ const { getAuth } = require("firebase-admin/auth");
 
 //using firebase admin sdk to validate user token
 router.use(function (req, res, next) {
-  const userIdToken = req.headers.useridtoken || req.body.useridtoken;
-  const isAdmin = req.headers.isAdmin || req.body.isAdmin;
+  console.log("verify user id token");
+  const userIdToken = req.headers.authorization;
+  const isAdmin = req.body.isAdmin;
 
   try {
     getAuth()
@@ -74,16 +75,14 @@ router.patch("/:uid", async (req, res, next) => {
 });
 
 router.post("/message/add", (req, res, next) => {
-  const { uid, _id, message, image } = req.body;
+  const { uid, message, image } = req.body;
   const timestamp = new Date();
-  console.log("api/essage/add");
 
   if (req.firebaseuid === uid) {
     User.findOne({ uid }).exec(function (err, result) {
       if (err) {
         return next(err);
       }
-      console.log(result);
 
       const newMsg = new Message({
         uid,
@@ -107,10 +106,11 @@ router.post("/message/add", (req, res, next) => {
 });
 
 router.delete("/message/delete", (req, res, next) => {
-  const { messageid, uid, method } = req.headers || {};
+  console.log("/message/delete");
+  const { messageid, uid, deletiontype } = req.body || {};
 
   if (req.firebaseuid === uid) {
-    if (method === "all") {
+    if (deletiontype === "all") {
       if (req.firebaseIsAdmin) {
         Message.deleteMany({ uid }).exec(function (err, result) {
           if (err) {
