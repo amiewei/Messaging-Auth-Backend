@@ -20,7 +20,12 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://chirp.ddns.net",
+};
+
+app.use(cors(corsOptions));
+// app.use(cors());
 
 // view engine setup
 app.engine(
